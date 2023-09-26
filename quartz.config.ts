@@ -6,10 +6,8 @@ const config: QuartzConfig = {
     pageTitle: "SecNotes",
     enableSPA: true,
     enablePopovers: true,
-    analytics: {
-      provider: "plausible",
-    },
-    baseUrl: "cavonstavant.github.io",
+    analytics: null,
+    baseUrl: "cavonstavant.github.io/SecNotes",
     ignorePatterns: ["private", "templates", ".obsidian"],
     defaultDateType: "created",
     theme: {
