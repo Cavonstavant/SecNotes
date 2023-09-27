@@ -100,7 +100,7 @@ A dump of the process can be directly created from the Task Manager, by using va
 
 ### NTD.dit
 
-> https://attack.mitre.org/techniques/T1003/003/
+> [https://attack.mitre.org/techniques/T1003/003/](https://attack.mitre.org/techniques/T1003/003/)
 
 
 Ntds.dit is the main AD database file. NTDS stands for NT Directory Services. The DIT stands for Directory Information Tree. The Ntds.dit file on a particular domain controller contains all naming contexts hosted by that domain controller, including the Configuration and Schema naming contexts. A Global Catalog server stores the partial naming context replicas in the Ntds.dit right along with the full Domain naming context for its domain.
@@ -111,5 +111,5 @@ To make a copy of the `NTDS.dit` file, we need to be in the `Administrator group
 Multiple techniques to exfiltrate the NTDS database can be found on The Hacker Recipes here: https://www.thehacker.recipes/ad/movement/credentials/dumping/ntds or we can directly cme to extract the contents of the NTDS.dit file. This method utilize VSS as described in the previous THR link to quickly capture and dump the contents of the db.
 
 > [!TIP]
-> A new tool called `ntdissector` made by the synactiv team was released in September, this tool is a swiss army knife for manipulating the `ndts.dit`.
+> A new tool called `ntdissector` made by the Synacktiv team was released in September, this tool is a swiss army knife for manipulating the `ndts.dit`.
 > You can find more about this tool on [their blog](https://www.synacktiv.com/en/publications/introducing-ntdissector-a-swiss-army-knife-for-your-ntdsdit-files) and on the [tools repo](https://github.com/synacktiv/ntdissector/).

@@ -12,4 +12,3 @@ date: 2023-08-29
 ## Writeups
 
 - [HTB](HTB/index.md)
-- [CTFs](CTFs/index.md)
