@@ -3,7 +3,6 @@ title: "Metasploit bits"
 date: 2023-08-25
 tags: [Metasploit, MetasploitFramework]
 ---
-
 > Metasploit documentation: https://docs.metasploit.com
 > Related CheatSheet: [Metasploit](Notes/CheatSheets/Metasploit.md)
 ## Metasploit architecture

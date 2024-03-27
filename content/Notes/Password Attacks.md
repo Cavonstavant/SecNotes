@@ -3,7 +3,6 @@ title: "About Password attacks"
 date: 2023-08-29
 tags: [Password, Attacks, Password Attacks]
 ---
-
 > Related Cheatsheet : [Password Attacks](Notes/CheatSheets/Password%20Attacks.md)
 > Some great documentation about Windows credential manipulation here: https://www.thehacker.recipes/ad/movement/credentials
 ## Credential storage in linux & windows environment
@@ -113,3 +112,4 @@ Multiple techniques to exfiltrate the NTDS database can be found on The Hacker R
 > [!TIP]
 > A new tool called `ntdissector` made by the Synacktiv team was released in September, this tool is a swiss army knife for manipulating the `ndts.dit`.
 > You can find more about this tool on [their blog](https://www.synacktiv.com/en/publications/introducing-ntdissector-a-swiss-army-knife-for-your-ntdsdit-files) and on the [tools repo](https://github.com/synacktiv/ntdissector/).
+
